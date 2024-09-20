@@ -1,8 +1,8 @@
-**[libraryNameWithSpacesAndUpperCases]** • **Docs**
+**Backbone.js Retry Requests** • **Docs**
 
 ***
 
-# [libraryNameWithSpacesAndUpperCases]
+# Backbone.js Retry Requests
 
 ## Type Aliases
 

@@ -1,8 +1,8 @@
-[**[libraryNameWithSpacesAndUpperCases]**](../README.md) • **Docs**
+[**Backbone.js Retry Requests**](../README.md) • **Docs**
 
 ***
 
-[[libraryNameWithSpacesAndUpperCases]](../README.md) / isNumberParseable
+[Backbone.js Retry Requests](../README.md) / isNumberParseable
 
 # Function: isNumberParseable()
 
@@ -36,4 +36,4 @@ return Number(value);
 
 ## Defined in
 
-[index.ts:24](https://github.com/VitorLuizC/typescript-library-boilerplate/blob/10d5bd1f65c001cd2fb2a664ffc160a25c2a95f0/src/index.ts#L24)
+[index.ts:24](https://github.com/VitorLuizC/backbone-retry-requests/blob/2323a1a4bc47eb1b6cf0e97e2869b976c300632c/src/index.ts#L24)
