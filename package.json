@@ -27,10 +27,14 @@
   "devDependencies": {
     "@eslint/js": "^9.10.0",
     "@rollup/plugin-terser": "^0.4.4",
+    "@types/backbone": "^1.4.22",
     "@types/eslint__js": "^8.42.3",
+    "@types/jquery": "^3.5.31",
+    "backbone": "^1.6.0",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
+    "jquery": "^3.7.1",
     "prettier": "^3.3.3",
     "rollup": "^4.22.0",
     "rollup-plugin-typescript2": "^0.36.0",
@@ -39,6 +43,12 @@
     "typescript": "~5.5.4",
     "typescript-eslint": "^8.6.0",
     "vitest": "^2.1.1"
+  },
+  "peerDependencies": {
+    "@types/backbone": "^1.4.22",
+    "@types/jquery": "^3.5.31",
+    "backbone": "^1.6.0",
+    "jquery": "^3.7.1"
   },
   "scripts": {
     "test": "bash run test",
