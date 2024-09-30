@@ -52,8 +52,8 @@ function doc() {
 }
 
 function test() {
-  echo -e "🧪 executing unit tests with Jest…\n"
-  jest
+  echo -e "🧪 executing unit tests with Vitest…\n"
+  vitest
 }
 
 function type-check() {

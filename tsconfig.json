@@ -20,7 +20,7 @@
     "strict": true,
 
     // Type-checking settings.
-    "lib": ["es2023"],
+    "lib": ["es2023", "dom"],
     "skipLibCheck": true,
     "types": ["jest"]
   },
