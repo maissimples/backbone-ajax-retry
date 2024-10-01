@@ -53,7 +53,7 @@ function doc() {
 
 function test() {
   echo -e "🧪 executing unit tests with Vitest…\n"
-  vitest
+  vitest ${@:1}
 }
 
 function type-check() {
