@@ -1,16 +1,66 @@
-import { isNumberParseable } from './';
+import Backbone from 'backbone';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
+import { afterAll, beforeAll, it, expect } from 'vitest';
+import './index';
 
-describe('unit | isNumberParseable', () => {
-  it('returns `true` for values parseable number', () => {
-    expect(isNumberParseable('-7.5')).toBe(true);
-    expect(isNumberParseable(false)).toBe(true);
-    expect(isNumberParseable(1892)).toBe(true);
+let count = 0;
+
+const server = setupServer(
+  http.get('http://api.akatsuki.com/members/2', () => {
+    return new HttpResponse(null, {
+      status: 404,
+      statusText: 'Not Found',
+    });
+  }),
+
+  http.get('http://api.akatsuki.com/members', () => {
+    count++;
+
+    if (count % 3 === 0) {
+      return HttpResponse.json({
+        id: 3,
+        name: 'Uchiha Itachi',
+      });
+    }
+
+    return new HttpResponse(null, {
+      status: 429,
+      statusText: 'Too Many Requests',
+    });
+  }),
+);
+
+interface MemberAttributes {
+  id: number;
+  name: string;
+}
+
+class Member extends Backbone.Model<MemberAttributes> {
+  override url = () => `http://api.akatsuki.com/members/${this.id}`;
+}
+
+class Members extends Backbone.Collection<Member> {
+  override url = () => 'http://api.akatsuki.com/members';
+}
+
+beforeAll(() => server.listen());
+
+it('retries when request returns status 429', async () => {
+  const members = new Members();
+
+  members.retries = 3;
+
+  await members.fetch();
+
+  expect(count).toBe(3);
+
+  expect(members.at(0).toJSON()).toEqual({
+    id: 3,
+    name: 'Uchiha Itachi',
   });
 
-  it('returns `false` for values non parseable to number', () => {
-    expect(isNumberParseable('A8sa')).toBe(false);
-    expect(isNumberParseable({})).toBe(false);
-    expect(isNumberParseable(NaN)).toBe(false);
-    expect(isNumberParseable('18L')).toBe(false);
-  });
+  count = 0;
 });
+
+afterAll(() => server.close());

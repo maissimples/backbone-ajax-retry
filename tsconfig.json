@@ -8,7 +8,7 @@
     "verbatimModuleSyntax": true,
 
     // Strictness and quality settings.
-    "exactOptionalPropertyTypes": true,
+    "exactOptionalPropertyTypes": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
