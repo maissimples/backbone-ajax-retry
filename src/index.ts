@@ -3,6 +3,8 @@
 import Backbone from './backbone';
 import JQueryXHRController from './JQueryXHRController';
 
+export { default as linearDelay } from './linearDelay';
+
 declare global {
   /* eslint @typescript-eslint/no-namespace: "off" */
 
