@@ -3,6 +3,7 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, beforeAll, it, expect } from 'vitest';
 import './index';
+import { setupBackboneAjaxRetry } from './index';
 
 let count = 0;
 
@@ -47,9 +48,11 @@ class Members extends Backbone.Collection<Member> {
 beforeAll(() => server.listen());
 
 it('retries when request returns status 429', async () => {
-  const members = new Members();
+  setupBackboneAjaxRetry(Backbone, {
+    retries: 3,
+  });
 
-  members.retries = 3;
+  const members = new Members();
 
   await members.fetch();
 
