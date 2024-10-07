@@ -4,7 +4,7 @@ import Backbone from 'backbone';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { afterAll, beforeAll, beforeEach, describe, it, expect } from 'vitest';
-import JQueryXHRController from './JQueryXHRController';
+import JQueryXHR from './JQueryXHR';
 
 const BASE_URL = 'https://api.akatsuki.com';
 
@@ -25,21 +25,18 @@ const server = setupServer(
 );
 
 describe('JQueryXHRController', () => {
-  let controller: JQueryXHRController;
-
   beforeAll(() => server.listen());
 
-  beforeEach(() => {
-    controller = new JQueryXHRController();
-  });
+  describe('JQueryXHR.asProxy', () => {
+    it('intercepts JQuery.jqXHR error', async () => {
+      const context = {
+        jqXHR: Backbone.$.ajax(`${BASE_URL}/members/2`),
+      };
 
-  describe('JQueryXHRController.prototype.interceptFailure', () => {
-    it('intercepts JQuery.jqXHR failures', async () => {
-      const baseJQueryXHR = Backbone.$.ajax(`${BASE_URL}/members/2`);
-
-      const jqXHR = controller.setJQueryXHR(baseJQueryXHR).interceptFailure(
-        // We're using a regular function in order to receive the context (this)
-        function (
+      const jqXHR = JQueryXHR.asProxy({
+        context: context,
+        onAbort: Backbone.$.noop,
+        onError: function (
           this: JQuery.AjaxSettings,
           jqXHR: JQuery.jqXHR,
           status: JQuery.Ajax.ErrorTextStatus,
@@ -67,17 +64,15 @@ describe('JQueryXHRController', () => {
 
           return jqXHR;
         },
-      );
+      });
 
       await jqXHR.catch((jqXHR) => {
         // @ts-expect-error because 'intercepted' property isn't defined.
         expect(jqXHR.intercepted).toBe(true);
       });
     });
-  });
 
-  describe('JQueryXHRController.prototype.proxy', () => {
-    let handleFailure: (
+    let handleError: (
       this: JQuery.AjaxSettings,
       jqXHR: JQuery.jqXHR,
       status: JQuery.Ajax.ErrorTextStatus,
@@ -85,7 +80,7 @@ describe('JQueryXHRController', () => {
     ) => JQuery.Deferred<any>;
 
     beforeEach(() => {
-      handleFailure = function (...args) {
+      handleError = function (...args) {
         const deferred = Backbone.$.Deferred<any>();
         return deferred.rejectWith(this, args);
       };
@@ -94,7 +89,13 @@ describe('JQueryXHRController', () => {
     it("supports 'jqXHR.abort' method", async () => {
       let jqXHR = Backbone.$.ajax(`${BASE_URL}/members/2`);
 
-      jqXHR = controller.setJQueryXHR(jqXHR).interceptFailure(handleFailure);
+      const context = { jqXHR };
+
+      jqXHR = JQueryXHR.asProxy({
+        context,
+        onError: handleError,
+        onAbort: (statusText) => context.jqXHR.abort(statusText),
+      });
 
       jqXHR.abort();
 
@@ -112,7 +113,11 @@ describe('JQueryXHRController', () => {
     it("supports 'jqXHR.getAllResponseHeaders' method", async () => {
       let jqXHR = Backbone.$.ajax(`${BASE_URL}/members/3`);
 
-      jqXHR = controller.setJQueryXHR(jqXHR).interceptFailure(handleFailure);
+      jqXHR = JQueryXHR.asProxy({
+        context: { jqXHR },
+        onError: handleError,
+        onAbort: (statusText) => jqXHR.abort(statusText),
+      });
 
       await jqXHR;
 
@@ -126,7 +131,11 @@ describe('JQueryXHRController', () => {
     it("supports 'jqXHR.done' method", async () => {
       let jqXHR = Backbone.$.ajax(`${BASE_URL}/members/3`);
 
-      jqXHR = controller.setJQueryXHR(jqXHR).interceptFailure(handleFailure);
+      jqXHR = JQueryXHR.asProxy({
+        context: { jqXHR },
+        onError: handleError,
+        onAbort: (statusText) => jqXHR.abort(statusText),
+      });
 
       await jqXHR.done((response, status, jqXHR) => {
         expect(response).toEqual({
@@ -148,7 +157,11 @@ describe('JQueryXHRController', () => {
     it("supports 'jqXHR.then' method", async () => {
       let jqXHR = Backbone.$.ajax(`${BASE_URL}/members/3`);
 
-      jqXHR = controller.setJQueryXHR(jqXHR).interceptFailure(handleFailure);
+      jqXHR = JQueryXHR.asProxy({
+        context: { jqXHR },
+        onError: handleError,
+        onAbort: (statusText) => jqXHR.abort(statusText),
+      });
 
       await jqXHR.then((response, status, jqXHR) => {
         expect(response).toEqual({
@@ -170,7 +183,11 @@ describe('JQueryXHRController', () => {
     it("supports 'jqXHR.fail' method", async () => {
       let jqXHR = Backbone.$.ajax(`${BASE_URL}/members/2`);
 
-      jqXHR = controller.setJQueryXHR(jqXHR).interceptFailure(handleFailure);
+      jqXHR = JQueryXHR.asProxy({
+        context: { jqXHR },
+        onError: handleError,
+        onAbort: (statusText) => jqXHR.abort(statusText),
+      });
 
       await jqXHR
         .fail((jqXHR, status, reason) => {
@@ -192,7 +209,11 @@ describe('JQueryXHRController', () => {
     it("supports 'jqXHR.catch' method", async () => {
       let jqXHR = Backbone.$.ajax(`${BASE_URL}/members/2`);
 
-      jqXHR = controller.setJQueryXHR(jqXHR).interceptFailure(handleFailure);
+      jqXHR = JQueryXHR.asProxy({
+        context: { jqXHR },
+        onError: handleError,
+        onAbort: (statusText) => jqXHR.abort(statusText),
+      });
 
       await jqXHR.catch((jqXHR, status, reason) => {
         expect(jqXHR).toEqual(
@@ -211,7 +232,11 @@ describe('JQueryXHRController', () => {
     it("supports 'jqXHR.always' method", async () => {
       let jqXHR = Backbone.$.ajax(`${BASE_URL}/members/3`);
 
-      jqXHR = controller.setJQueryXHR(jqXHR).interceptFailure(handleFailure);
+      jqXHR = JQueryXHR.asProxy({
+        context: { jqXHR },
+        onError: handleError,
+        onAbort: (statusText) => jqXHR.abort(statusText),
+      });
 
       await jqXHR
         .done(Backbone.$.noop)
@@ -236,7 +261,11 @@ describe('JQueryXHRController', () => {
 
       jqXHR = Backbone.$.ajax(`${BASE_URL}/members/2`);
 
-      jqXHR = controller.setJQueryXHR(jqXHR).interceptFailure(handleFailure);
+      jqXHR = JQueryXHR.asProxy({
+        context: { jqXHR },
+        onError: handleError,
+        onAbort: (statusText) => jqXHR.abort(statusText),
+      });
 
       await jqXHR
         .fail(Backbone.$.noop)

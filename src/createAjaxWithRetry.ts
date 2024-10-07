@@ -1,13 +1,27 @@
 /* eslint @typescript-eslint/no-explicit-any: 'off' */
 
-import JQueryXHRController from './JQueryXHRController';
+import JQueryXHR from './JQueryXHR';
 import type { Backbone, BackboneAjax } from './types';
+
+type TimeoutId = ReturnType<typeof setTimeout>;
+
+type Context<T = any> = {
+  delay?: {
+    timeoutId: TimeoutId;
+    deferred: JQuery.Deferred<any>;
+  };
+  jqXHR: JQuery.jqXHR<T>;
+  settings: JQueryAjaxSettings;
+};
 
 function createAjaxWithRetry(backbone: Backbone): BackboneAjax {
   const ORIGINAL_AJAX = backbone.ajax;
 
-  return function ajaxWithRetry(this: Backbone, settings) {
-    const controller = new JQueryXHRController();
+  return function ajaxWithRetry(settings = {}) {
+    const context: Context = {
+      jqXHR: ORIGINAL_AJAX.call(backbone, settings),
+      settings,
+    };
 
     function handleError(
       this: JQuery.AjaxSettings,
@@ -22,21 +36,52 @@ function createAjaxWithRetry(backbone: Backbone): BackboneAjax {
         tries > backbone.retry.retries ||
         !backbone.retry.condition(jqXHR, this.backboneSyncMethod);
 
-      if (skipRetry) {
-        const deferred = backbone.$.Deferred();
+      const deferred = backbone.$.Deferred();
+
+      if (skipRetry)
         return deferred.rejectWith(this, [jqXHR, status, statusText]);
-      }
+
+      const timeoutId = setTimeout(
+        () => {
+          delete context.delay;
+          context.jqXHR = ORIGINAL_AJAX.call(backbone, this);
+          deferred.resolve(
+            JQueryXHR.asProxy<any>({
+              context,
+              onAbort: handleAbort,
+              onError: handleError,
+            }),
+          );
+        },
+        backbone.retry.delay(tries, jqXHR),
+      );
+
+      context.settings = this;
+      context.delay = { deferred, timeoutId };
 
       this.tries = tries + 1;
 
-      return controller
-        .setJQueryXHR(backbone.ajax(this))
-        .interceptFailure(handleError);
+      return deferred;
     }
 
-    return controller
-      .setJQueryXHR(ORIGINAL_AJAX.call(this, settings))
-      .interceptFailure(handleError);
+    function handleAbort(statusText?: string) {
+      if (!context.delay) {
+        context.jqXHR.abort(statusText);
+        return;
+      }
+
+      const { deferred, timeoutId } = context.delay;
+
+      delete context.delay;
+      clearTimeout(timeoutId);
+      deferred.reject(JQueryXHR.asAborted(context.settings));
+    }
+
+    return JQueryXHR.asProxy<any>({
+      context,
+      onError: handleError,
+      onAbort: handleAbort,
+    });
   };
 }
 
