@@ -70,7 +70,7 @@ class JQueryXHR {
       statusCode: $.noop,
       getResponseHeader: () => null,
       getAllResponseHeaders: () => '',
-      readyState: 4,
+      readyState: 0,
       responseText: '',
       overrideMimeType: $.noop,
       setRequestHeader: $.noop,

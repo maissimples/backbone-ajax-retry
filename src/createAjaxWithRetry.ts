@@ -74,7 +74,11 @@ function createAjaxWithRetry(backbone: Backbone): BackboneAjax {
 
       delete context.delay;
       clearTimeout(timeoutId);
-      deferred.reject(JQueryXHR.asAborted(context.settings));
+      deferred.rejectWith(context.settings, [
+        JQueryXHR.asAborted(context.settings),
+        'abort',
+        'abort',
+      ]);
     }
 
     return JQueryXHR.asProxy<any>({
