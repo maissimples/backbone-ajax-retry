@@ -13,9 +13,7 @@ function createGetterDescriptor<T>(get: () => T): PropertyDescriptor {
 }
 
 export type JQueryXHRAsProxyOptions<T = any> = {
-  context: {
-    jqXHR: JQuery.jqXHR<T>;
-  };
+  context: { jqXHR: JQuery.jqXHR<T> };
   onAbort: (statusText?: string) => void;
   onError: (
     this: JQuery.AjaxSettings,
@@ -76,7 +74,7 @@ class JQueryXHR {
       setRequestHeader: $.noop,
     });
 
-    deferred.rejectWith(settings, [jqXHR, 'canceled', 'abort']);
+    deferred.rejectWith(settings, [jqXHR, 'abort', 'abort']);
 
     return jqXHR as JQuery.jqXHR<T>;
   }

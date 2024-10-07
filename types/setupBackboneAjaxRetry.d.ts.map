@@ -1,0 +1,1 @@
+{"version":3,"file":"setupBackboneAjaxRetry.d.ts","sourceRoot":"","sources":["../src/setupBackboneAjaxRetry.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,QAAQ,EAAE,yBAAyB,EAAE,MAAM,SAAS,CAAC;AAMnE,iBAAS,sBAAsB,CAC7B,QAAQ,EAAE,QAAQ,EAClB,QAAQ,CAAC,EAAE,yBAAyB,GACnC,IAAI,CAeN;AAED,eAAe,sBAAsB,CAAC"}

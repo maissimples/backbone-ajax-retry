@@ -1,0 +1,1 @@
+{"version":3,"file":"createAjaxWithRetry.d.ts","sourceRoot":"","sources":["../src/createAjaxWithRetry.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAE,QAAQ,EAAE,YAAY,EAAE,MAAM,SAAS,CAAC;AAatD,iBAAS,mBAAmB,CAAC,QAAQ,EAAE,QAAQ,GAAG,YAAY,CAyE7D;AAED,eAAe,mBAAmB,CAAC"}
