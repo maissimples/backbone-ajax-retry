@@ -18,7 +18,7 @@ const server = setupServer(
   http.get('http://api.akatsuki.com/members', () => {
     count++;
 
-    if (count % 3 === 0) {
+    if (count % 4 === 0) {
       return HttpResponse.json({
         id: 3,
         name: 'Uchiha Itachi',
@@ -50,14 +50,14 @@ beforeAll(() => server.listen());
 it('retries when request returns status 429', async () => {
   setupBackboneAjaxRetry(Backbone, {
     retries: 3,
-    delay: linearDelay(1_000),
+    delay: linearDelay(200),
   });
 
   const members = new Members();
 
   await members.fetch();
 
-  expect(count).toBe(3);
+  expect(count).toBe(4);
 
   expect(members.at(0).toJSON()).toEqual({
     id: 3,
