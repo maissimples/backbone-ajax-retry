@@ -1,8 +1,4 @@
-/*!
- * backbone-retry-requests v0.0.0
- * (c) Vitor Luiz Cavalcanti
- * Released under the MIT License.
- */
+/*! backbone-ajax-retry v1.0.0 */
 
 import $ from 'jquery';
 

@@ -20,4 +20,4 @@
 
 ## Defined in
 
-[types.ts:10](https://github.com/VitorLuizC/backbone-retry-requests/blob/14d556d1e82ad412ae05820dfa42281537b039ee/src/types.ts#L10)
+[types.ts:10](https://github.com/maissimples/backbone-ajax-retry/blob/6970c8ef47b42cfea1d0cd17b82672cf9b3645ad/src/types.ts#L10)

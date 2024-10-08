@@ -1,6 +1,7 @@
 {
-  "name": "backbone-retry-requests",
-  "version": "0.0.0",
+  "private": true,
+  "name": "backbone-ajax-retry",
+  "version": "1.0.0",
   "description": "",
   "cdn": "dist/index.umd.js",
   "main": "dist/index.js",
@@ -54,18 +55,5 @@
   "scripts": {
     "test": "bash run test",
     "prepublishOnly": "bash run prepublish-only"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/VitorLuizC/backbone-retry-requests.git"
-  },
-  "keywords": [],
-  "author": {
-    "name": "Vitor Luiz Cavalcanti"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/VitorLuizC/backbone-retry-requests/issues"
-  },
-  "homepage": "https://github.com/VitorLuizC/backbone-retry-requests#readme"
+  }
 }

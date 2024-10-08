@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[types.ts:24](https://github.com/VitorLuizC/backbone-retry-requests/blob/14d556d1e82ad412ae05820dfa42281537b039ee/src/types.ts#L24)
+[types.ts:24](https://github.com/maissimples/backbone-ajax-retry/blob/6970c8ef47b42cfea1d0cd17b82672cf9b3645ad/src/types.ts#L24)
 
 ***
 
@@ -30,7 +30,7 @@ linearDelay(1_000)
 
 #### Defined in
 
-[types.ts:19](https://github.com/VitorLuizC/backbone-retry-requests/blob/14d556d1e82ad412ae05820dfa42281537b039ee/src/types.ts#L19)
+[types.ts:19](https://github.com/maissimples/backbone-ajax-retry/blob/6970c8ef47b42cfea1d0cd17b82672cf9b3645ad/src/types.ts#L19)
 
 ***
 
@@ -46,4 +46,4 @@ linearDelay(1_000)
 
 #### Defined in
 
-[types.ts:22](https://github.com/VitorLuizC/backbone-retry-requests/blob/14d556d1e82ad412ae05820dfa42281537b039ee/src/types.ts#L22)
+[types.ts:22](https://github.com/maissimples/backbone-ajax-retry/blob/6970c8ef47b42cfea1d0cd17b82672cf9b3645ad/src/types.ts#L22)

@@ -7,11 +7,7 @@ import packageJSON from './package.json' assert { type: 'json' };
 /**
  * Comment with library information to be appended in the generated bundles.
  */
-const banner = `/*!
- * ${packageJSON.name} v${packageJSON.version}
- * (c) ${packageJSON.author.name}
- * Released under the ${packageJSON.license} License.
- */
+const banner = `/*! ${packageJSON.name} v${packageJSON.version} */
 `;
 
 /**
@@ -22,9 +18,12 @@ const banner = `/*!
 function createOutputOptions(options) {
   return {
     banner,
-    name: 'BackboneRetryRequests',
+    name: 'BackboneAjaxRetry',
     exports: 'named',
     sourcemap: true,
+    globals: {
+      jquery: '$',
+    },
     ...options,
   };
 }
@@ -34,6 +33,7 @@ function createOutputOptions(options) {
  */
 const options = {
   input: './src/index.ts',
+  external: ['backbone', 'jquery'],
   output: [
     createOutputOptions({
       file: './dist/index.js',

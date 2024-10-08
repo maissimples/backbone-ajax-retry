@@ -1,13 +1,9 @@
-/*!
- * backbone-retry-requests v0.0.0
- * (c) Vitor Luiz Cavalcanti
- * Released under the MIT License.
- */
+/*! backbone-ajax-retry v1.0.0 */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('jquery')) :
   typeof define === 'function' && define.amd ? define(['exports', 'jquery'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.BackboneRetryRequests = {}, global.$));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.BackboneAjaxRetry = {}, global.$));
 })(this, (function (exports, $) { 'use strict';
 
   function linearDelay(delayFactor = 100) {
