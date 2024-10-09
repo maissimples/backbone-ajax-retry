@@ -1,9 +1,10 @@
 import Backbone from 'backbone';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { afterAll, beforeAll, it, expect } from 'vitest';
-import './index';
-import { linearDelay, setupBackboneAjaxRetry } from './index';
+import { afterAll, beforeAll, it, expect, describe } from 'vitest';
+import linearDelay from './linearDelay';
+import hasRetryableStatus from './hasRetryableStatus';
+import setupBackboneAjaxRetry from './setupBackboneAjaxRetry';
 
 let count = 0;
 
@@ -45,26 +46,39 @@ class Members extends Backbone.Collection<Member> {
   override url = () => 'http://api.akatsuki.com/members';
 }
 
-beforeAll(() => server.listen());
+describe('setupBackboneAjaxRetry', () => {
+  beforeAll(() => server.listen());
 
-it('retries when request returns status 429', async () => {
-  setupBackboneAjaxRetry(Backbone, {
-    retries: 3,
-    delay: linearDelay(200),
+  it('retries when request returns status 429', async () => {
+    setupBackboneAjaxRetry(Backbone, {
+      retries: 3,
+      delay: linearDelay(200),
+    });
+
+    const members = new Members();
+
+    await members.fetch();
+
+    expect(count).toBe(4);
+
+    expect(members.at(0).toJSON()).toEqual({
+      id: 3,
+      name: 'Uchiha Itachi',
+    });
+
+    count = 0;
   });
 
-  const members = new Members();
+  it('defines great settings as default', async () => {
+    setupBackboneAjaxRetry(Backbone);
 
-  await members.fetch();
+    expect(Backbone.retry.retries).toBe(3);
+    expect(Backbone.retry.delay(1)).toBe(200);
+    expect(Backbone.retry.delay(2)).toBe(400);
+    expect(Backbone.retry.condition).toBe(hasRetryableStatus);
 
-  expect(count).toBe(4);
-
-  expect(members.at(0).toJSON()).toEqual({
-    id: 3,
-    name: 'Uchiha Itachi',
+    // For me these were great.
   });
 
-  count = 0;
+  afterAll(() => server.close());
 });
-
-afterAll(() => server.close());

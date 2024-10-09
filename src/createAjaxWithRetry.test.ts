@@ -78,6 +78,33 @@ describe('createAjaxWithRetry', () => {
     );
   });
 
+  it('aborts the most current jqXHR', async () => {
+    Backbone.retry = {
+      delay: () => 0,
+      retries: 1,
+      condition: hasRetryableStatus,
+    };
+
+    const jqXHR = ajax({ url: `${BASE_URL}/bijuu/9`, tries: 1 });
+
+    jqXHR.abort();
+
+    await jqXHR.catch(
+      // A regular function was used to preserve 'this' context.
+      function (this: JQueryAjaxSettings, jqXHR, status, statusText) {
+        expect(this.tries).toBe(1);
+
+        expect(jqXHR.status).toBe(0);
+        expect(jqXHR.statusText).toBe('abort');
+        expect(jqXHR.readyState).toBe(0);
+        expect(jqXHR.state()).toBe('rejected');
+
+        expect(status).toBe('abort');
+        expect(statusText).toBe('abort');
+      },
+    );
+  });
+
   it("doesn't retry on create methods by default", async () => {
     Backbone.retry = {
       delay: linearDelay(200),
