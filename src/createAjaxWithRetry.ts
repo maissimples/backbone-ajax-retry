@@ -31,10 +31,18 @@ function createAjaxWithRetry(backbone: Backbone): BackboneAjax {
     ): JQuery.jqXHR | JQuery.Deferred<any> {
       // We ensure 'tries' are defined using an '$.ajaxFilter' in the setup.
       const tries = this.tries!;
+      const retries = this.backbone?.model.retries ?? backbone.retry.retries;
+      const skipRetryOnCreate = !this.backbone?.model?.retryOnCreate;
+      const methodIsCreate = this.backbone?.sync?.method === 'create';
 
       const skipRetry =
-        tries > backbone.retry.retries ||
-        !backbone.retry.condition(jqXHR, this.backboneSyncMethod);
+        tries > retries ||
+        (skipRetryOnCreate && methodIsCreate) ||
+        !backbone.retry.condition(
+          jqXHR,
+          this.backbone?.model,
+          this.backbone?.sync?.method,
+        );
 
       const deferred = backbone.$.Deferred();
 

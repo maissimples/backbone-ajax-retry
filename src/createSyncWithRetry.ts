@@ -6,7 +6,10 @@ function createSyncWithRetry(backbone: Backbone): BackboneSync {
   return function (this: Backbone, method, model, settings = {}) {
     return ORIGINAL_SYNC.call(this, method, model, {
       ...settings,
-      backboneSyncMethod: method,
+      backbone: {
+        model,
+        sync: { method },
+      },
     });
   };
 }

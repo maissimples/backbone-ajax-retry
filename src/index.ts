@@ -16,9 +16,14 @@ declare global {
 
       /**
        * @private
-       * An attribute that keeps track of Backbone.sync method.
+       * An attribute that keeps track of the Backbone.js data.
        */
-      backboneSyncMethod?: string;
+      backbone?: {
+        model: Backbone.Model<any> | Backbone.Collection<any>;
+        sync?: {
+          method: string;
+        };
+      };
     }
   }
 
@@ -27,10 +32,12 @@ declare global {
 
     interface Model {
       retries?: number;
+      retryOnCreate?: boolean;
     }
 
     interface Collection {
       retries?: number;
+      retryOnCreate?: boolean;
     }
   }
 }
