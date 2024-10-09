@@ -17,7 +17,7 @@ type Context<T = any> = {
 function createAjaxWithRetry(backbone: Backbone): BackboneAjax {
   const ORIGINAL_AJAX = backbone.ajax;
 
-  return function ajaxWithRetry(settings = {}) {
+  return (settings = {}) => {
     const context: Context = {
       jqXHR: ORIGINAL_AJAX.call(backbone, settings),
       settings,
@@ -31,7 +31,7 @@ function createAjaxWithRetry(backbone: Backbone): BackboneAjax {
     ): JQuery.jqXHR | JQuery.Deferred<any> {
       // We ensure 'tries' are defined using an '$.ajaxFilter' in the setup.
       const tries = this.tries!;
-      const retries = this.backbone?.model.retries ?? backbone.retry.retries;
+      const retries = settings.retries ?? backbone.retry.retries;
       const skipRetryOnCreate = !this.backbone?.model?.retryOnCreate;
       const methodIsCreate = this.backbone?.sync?.method === 'create';
 
