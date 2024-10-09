@@ -10,6 +10,11 @@ declare global {
             tries?: number;
             /**
              * @private
+             * Overrides the 'retries' setting defined in the setup for this request.
+             */
+            retries?: number;
+            /**
+             * @private
              * An attribute that keeps track of the Backbone.js data.
              */
             backbone?: {

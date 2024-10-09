@@ -22,4 +22,4 @@
 
 ## Defined in
 
-[types.ts:16](https://github.com/maissimples/backbone-ajax-retry/blob/8ffbafb5dc7c3ae043926cea365cc946a223ba99/src/types.ts#L16)
+[types.ts:16](https://github.com/maissimples/backbone-ajax-retry/blob/4fa4d00eaeb7c00db986d6a1644e23061db71fca/src/types.ts#L16)
