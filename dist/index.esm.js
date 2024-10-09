@@ -1,4 +1,4 @@
-/*! backbone-ajax-retry v1.0.0 */
+/*! backbone-ajax-retry v1.1.0 */
 
 import $ from 'jquery';
 
@@ -83,10 +83,15 @@ function createAjaxWithRetry(backbone) {
             settings,
         };
         function handleError(jqXHR, status, statusText) {
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j;
             // We ensure 'tries' are defined using an '$.ajaxFilter' in the setup.
             const tries = this.tries;
-            const skipRetry = tries > backbone.retry.retries ||
-                !backbone.retry.condition(jqXHR, this.backboneSyncMethod);
+            const retries = (_b = (_a = this.backbone) === null || _a === void 0 ? void 0 : _a.model.retries) !== null && _b !== void 0 ? _b : backbone.retry.retries;
+            const skipRetryOnCreate = !((_d = (_c = this.backbone) === null || _c === void 0 ? void 0 : _c.model) === null || _d === void 0 ? void 0 : _d.retryOnCreate);
+            const methodIsCreate = ((_f = (_e = this.backbone) === null || _e === void 0 ? void 0 : _e.sync) === null || _f === void 0 ? void 0 : _f.method) === 'create';
+            const skipRetry = tries > retries ||
+                (skipRetryOnCreate && methodIsCreate) ||
+                !backbone.retry.condition(jqXHR, (_g = this.backbone) === null || _g === void 0 ? void 0 : _g.model, (_j = (_h = this.backbone) === null || _h === void 0 ? void 0 : _h.sync) === null || _j === void 0 ? void 0 : _j.method);
             const deferred = backbone.$.Deferred();
             if (skipRetry)
                 return deferred.rejectWith(this, [jqXHR, status, statusText]);
@@ -129,7 +134,10 @@ function createAjaxWithRetry(backbone) {
 function createSyncWithRetry(backbone) {
     const ORIGINAL_SYNC = backbone.sync;
     return function (method, model, settings = {}) {
-        return ORIGINAL_SYNC.call(this, method, model, Object.assign(Object.assign({}, settings), { backboneSyncMethod: method }));
+        return ORIGINAL_SYNC.call(this, method, model, Object.assign(Object.assign({}, settings), { backbone: {
+                model,
+                sync: { method },
+            } }));
     };
 }
 

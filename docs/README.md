@@ -6,9 +6,12 @@
 
 ## Interfaces
 
-- [BackboneAjaxRetryCondition](interfaces/BackboneAjaxRetryCondition.md)
-- [BackboneAjaxRetryDelay](interfaces/BackboneAjaxRetryDelay.md)
 - [BackboneAjaxRetrySettings](interfaces/BackboneAjaxRetrySettings.md)
+
+## Type Aliases
+
+- [BackboneAjaxRetryCondition](type-aliases/BackboneAjaxRetryCondition.md)
+- [BackboneAjaxRetryDelay](type-aliases/BackboneAjaxRetryDelay.md)
 
 ## Functions
 

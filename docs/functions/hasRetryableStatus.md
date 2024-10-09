@@ -20,4 +20,4 @@ Checks if jQuery ajax returns a response with a retryable status.
 
 ## Defined in
 
-[hasRetryableStatus.ts:5](https://github.com/maissimples/backbone-ajax-retry/blob/6970c8ef47b42cfea1d0cd17b82672cf9b3645ad/src/hasRetryableStatus.ts#L5)
+[hasRetryableStatus.ts:5](https://github.com/maissimples/backbone-ajax-retry/blob/8ffbafb5dc7c3ae043926cea365cc946a223ba99/src/hasRetryableStatus.ts#L5)

@@ -10,17 +10,17 @@
 
 ### condition?
 
-> `optional` **condition**: [`BackboneAjaxRetryCondition`](BackboneAjaxRetryCondition.md)
+> `optional` **condition**: [`BackboneAjaxRetryCondition`](../type-aliases/BackboneAjaxRetryCondition.md)
 
 #### Defined in
 
-[types.ts:24](https://github.com/maissimples/backbone-ajax-retry/blob/6970c8ef47b42cfea1d0cd17b82672cf9b3645ad/src/types.ts#L24)
+[types.ts:29](https://github.com/maissimples/backbone-ajax-retry/blob/8ffbafb5dc7c3ae043926cea365cc946a223ba99/src/types.ts#L29)
 
 ***
 
 ### delay?
 
-> `optional` **delay**: [`BackboneAjaxRetryDelay`](BackboneAjaxRetryDelay.md)
+> `optional` **delay**: [`BackboneAjaxRetryDelay`](../type-aliases/BackboneAjaxRetryDelay.md)
 
 #### Default
 
@@ -30,7 +30,7 @@ linearDelay(1_000)
 
 #### Defined in
 
-[types.ts:19](https://github.com/maissimples/backbone-ajax-retry/blob/6970c8ef47b42cfea1d0cd17b82672cf9b3645ad/src/types.ts#L19)
+[types.ts:24](https://github.com/maissimples/backbone-ajax-retry/blob/8ffbafb5dc7c3ae043926cea365cc946a223ba99/src/types.ts#L24)
 
 ***
 
@@ -46,4 +46,4 @@ linearDelay(1_000)
 
 #### Defined in
 
-[types.ts:22](https://github.com/maissimples/backbone-ajax-retry/blob/6970c8ef47b42cfea1d0cd17b82672cf9b3645ad/src/types.ts#L22)
+[types.ts:27](https://github.com/maissimples/backbone-ajax-retry/blob/8ffbafb5dc7c3ae043926cea365cc946a223ba99/src/types.ts#L27)
