@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "backbone-ajax-retry",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "",
   "cdn": "dist/index.umd.js",
   "main": "dist/index.js",
