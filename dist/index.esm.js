@@ -1,4 +1,4 @@
-/*! backbone-ajax-retry v1.2.0 */
+/*! backbone-ajax-retry v1.2.1 */
 
 import $ from 'jquery';
 
@@ -135,10 +135,12 @@ function createSyncWithRetry(backbone) {
     const ORIGINAL_SYNC = backbone.sync;
     return function (method, model, settings = {}) {
         var _a;
-        return ORIGINAL_SYNC.call(this, method, model, Object.assign(Object.assign({}, settings), { retries: (_a = settings.retries) !== null && _a !== void 0 ? _a : model.retries, backbone: {
-                model,
-                sync: { method },
-            } }));
+        settings.retries = (_a = settings.retries) !== null && _a !== void 0 ? _a : model.retries;
+        settings.backbone = {
+            model,
+            sync: { method },
+        };
+        return ORIGINAL_SYNC.call(this, method, model, settings);
     };
 }
 
